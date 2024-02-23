@@ -2,17 +2,45 @@ POST http://localhost:4004/odata/v4/noauth/Demand HTTP/1.1
 Content-Type: application/json
 
 {
-  "Demand_ID": "1002",
-  "Project": "coca_cola"}
+  "Demand_ID": "1001",
+  "Project": "ikea"}
 
 ###
-POST http://localhost:4004/odata/v4/noauth/Demand_Items HTTP/1.1
+POST http://localhost:4004/odata/v4/noauth/DemandItems HTTP/1.1
 Content-Type: application/json
 
 {
-  "Demand_ID": "1001",
-  "Project": "ikea",
-  "Demand_Item":"02",
-  "Resource_Enterprise_ID": "kk.kk2"
+  "Demand_ID": "1002",
+  "Project": "cocacola",
+  "Demand_Item":"01",
+  "Resource_Enterprise_ID": "kk.kk0"
   }
 
+###
+POST http://localhost:4004/odata/v4/noauth/Resource HTTP/1.1
+Content-Type: application/json
+
+{
+  "Enterprise_ID":"kk.kk2",
+  "Employee_ID":"0192",
+  "Employee_Name":"devansh",
+"Location": "noida"
+
+}
+####
+POST http://localhost:4004/odata/v4/noauth/Projects HTTP/1.1
+Content-Type: application/json
+
+{
+  "Project": "ikea",
+  "Project_Type":"fix"
+}
+####
+POST http://localhost:4004/odata/v4/noauth/Assignment HTTP/1.1
+Content-Type: application/json
+
+{
+  "Enterprise_ID": "kk.kk1",
+  "Project":"ikea",
+  "Allocation": "100%"
+}

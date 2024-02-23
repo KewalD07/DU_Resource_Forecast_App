@@ -11,7 +11,7 @@ entity Resources {
       Lead_Resource_ID : String;
       Team             : String;
       To_assignment : Association to many Assignment on To_assignment.Enterprise_ID=Enterprise_ID;
-      To_demand_items : Association to many Demand_Items on To_demand_items.Resource_Enterprise_ID=Enterprise_ID;
+      To_DemandItems : Association to many DemandItems on To_DemandItems.Resource_Enterprise_ID=Enterprise_ID;
       //Has_Selected_Skill         : String;
       Status           : String;
 }
@@ -43,7 +43,7 @@ entity Assignment {
 entity Demand {
   key ID                      : UUID;
       Demand_ID               : String;
-      To_demand_items : Association to many Demand_Items on To_demand_items.Demand_ID=Demand_ID;
+      To_DemandItems : Association to many DemandItems on To_DemandItems.Demand_ID=Demand_ID;
       Project                 : String;
       Project_Type            : String;
       Delivery_Type           : String;
@@ -57,6 +57,22 @@ entity Demand {
 
 
 entity Demand_Items {
+  key ID                     : UUID;
+      Demand_ID              : String;
+      To_demand : Association to one Demand on To_demand.Demand_ID=Demand_ID;
+      Project                : String;
+      Demand_Item            : String;
+      Start_Date             : String;
+      End_Date               : String;
+      //Required_Skill         : String;
+      Required_Level         : String;
+      Resource_Skill         : String;
+      Resource_Level         : String;
+      Resource_Enterprise_ID : String;
+      To_resource : Association to one Resources on To_resource.Enterprise_ID=Resource_Enterprise_ID;
+      Resource_Status        : String;
+}
+entity DemandItems {
   key ID                     : UUID;
       Demand_ID              : String;
       To_demand : Association to one Demand on To_demand.Demand_ID=Demand_ID;
