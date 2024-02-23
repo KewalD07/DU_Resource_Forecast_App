@@ -1,0 +1,18 @@
+POST http://localhost:4004/odata/v4/noauth/Demand HTTP/1.1
+Content-Type: application/json
+
+{
+  "Demand_ID": "1002",
+  "Project": "coca_cola"}
+
+###
+POST http://localhost:4004/odata/v4/noauth/Demand_Items HTTP/1.1
+Content-Type: application/json
+
+{
+  "Demand_ID": "1001",
+  "Project": "ikea",
+  "Demand_Item":"02",
+  "Resource_Enterprise_ID": "kk.kk2"
+  }
+
