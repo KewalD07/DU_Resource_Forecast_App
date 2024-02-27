@@ -1,5 +1,6 @@
 using my.resources as my from '../db/data-model';
-git init
+
+
 service CatalogService @(requires: 'authenticated-user'){
     entity Resource as projection on my.Resources;
     entity Projects as projection on my.Projects;
