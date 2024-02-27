@@ -1,50 +1,97 @@
-_schema-version: '3.1'
+_schema-version: "3.1"
 ID: Demo_Apps
+description: A simple CAP project.
 version: 1.0.0
-description: "A simple CAP project."
+modules:
+- name: Demo_Apps-srv
+  type: nodejs
+  path: gen/srv
+  requires:
+  - name: Demo_Apps-db
+  - name: Demo_Apps-auth
+  provides:
+  - name: srv-api
+    properties:
+      srv-url: ${default-url}
+  parameters:
+    buildpack: nodejs_buildpack
+  build-parameters:
+    builder: npm
+- name: Demo_Apps-db-deployer
+  type: hdb
+  path: gen/db
+  requires:
+  - name: Demo_Apps-db
+  parameters:
+    buildpack: nodejs_buildpack
+- name: Demo_Apps-app-content
+  type: com.sap.application.content
+  path: .
+  requires:
+  - name: Demo_Apps-repo-host
+    parameters:
+      content-target: true
+  build-parameters:
+    build-result: resources
+    requires:
+    - artifacts:
+      - atciduforecastui.zip
+      name: atciduforecastui
+      target-path: resources/
+- name: atciduforecastui
+  type: html5
+  path: app/atciduforecastui
+  build-parameters:
+    build-result: dist
+    builder: custom
+    commands:
+    - npm install
+    - npm run build:cf
+    supported-platforms: []
+resources:
+- name: Demo_Apps-db
+  type: com.sap.xs.hdi-container
+  parameters:
+    service: hana
+    service-plan: hdi-shared
+- name: Demo_Apps-auth
+  type: org.cloudfoundry.managed-service
+  parameters:
+    config:
+      tenant-mode: dedicated
+      xsappname: Demo_Apps-${org}-${space}
+    path: ./xs-security.json
+    service: xsuaa
+    service-plan: application
+- name: Demo_Apps-repo-host
+  type: org.cloudfoundry.managed-service
+  parameters:
+    service: html5-apps-repo
+    service-name: Demo_Apps-html5-srv
+    service-plan: app-host
+- name: Demo_Apps-destination-service
+  type: org.cloudfoundry.managed-service
+  parameters:
+    config:
+      HTML5Runtime_enabled: false
+      init_data:
+        instance:
+          destinations:
+          - Authentication: NoAuthentication
+            Name: ui5
+            ProxyType: Internet
+            Type: HTTP
+            URL: https://ui5.sap.com
+          existing_destinations_policy: update
+      version: 1.0.0
+    service: destination
+    service-name: Demo_Apps-destination-service
+    service-plan: lite
 parameters:
+  deploy_mode: html5-repo
   enable-parallel-deployments: true
 build-parameters:
   before-all:
-    - builder: custom
-      commands:
-        - npx cds build --production
-modules:
-  - name: Demo_Apps-srv
-    type: nodejs
-    path: gen/srv
-    parameters:
-      buildpack: nodejs_buildpack
-    build-parameters:
-      builder: npm
-    provides:
-      - name: srv-api # required by consumers of CAP services (e.g. approuter)
-        properties:
-          srv-url: ${default-url}
-    requires:
-      - name: Demo_Apps-db
-      - name: Demo_Apps-auth
-
-  - name: Demo_Apps-db-deployer
-    type: hdb
-    path: gen/db
-    parameters:
-      buildpack: nodejs_buildpack
-    requires:
-      - name: Demo_Apps-db
-
-resources:
-  - name: Demo_Apps-db
-    type: com.sap.xs.hdi-container
-    parameters:
-      service: hana
-      service-plan: hdi-shared
-  - name: Demo_Apps-auth
-    type: org.cloudfoundry.managed-service
-    parameters:
-      service: xsuaa
-      service-plan: application
-      path: ./xs-security.json
-      config:
-        xsappname: Demo_Apps-${org}-${space}
-        tenant-mode: dedicated
+  - builder: custom
+    commands:
+    - npx cds build --production
