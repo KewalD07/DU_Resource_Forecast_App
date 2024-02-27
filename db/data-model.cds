@@ -1,90 +1,82 @@
 namespace my.resources;
 
 entity Resources {
-  key ID               : UUID;
-      Enterprise_ID    : String;
-      Employee_ID      : String;
-      Employee_Name    : String;
-      Location         : String;
-      Designation      : String;
-      Level            : String;
-      Lead_Resource_ID : String;
-      Team             : String;
-      To_assignment : Association to many Assignment on To_assignment.Enterprise_ID=Enterprise_ID;
-      To_DemandItems : Association to many DemandItems on To_DemandItems.Resource_Enterprise_ID=Enterprise_ID;
-      //Has_Selected_Skill         : String;
-      Status           : String;
+  key ID             : UUID;
+      enterpriseID   : String;
+      employeeID     : Integer;
+      employeeName   : String;
+      location       : String;
+      designation    : String;
+      level          : Integer;
+      leadResourceID : String;
+      team           : String;
+      toAssignment   : Association to many Assignments
+                         on toAssignment.enterpriseID = enterpriseID;
+      toDemandItems  : Association to many DemandItems
+                         on toDemandItems.resourceEnterpriseID = enterpriseID;
+      //hasSelectedSkill         : String;
+      status         : String;
 }
 
 entity Projects {
-  key ID            : UUID;
-      Project       : String;
-      Project_Type  : String;
-      Delivery_Type : String;
-      Lead_Resource : String;
-      To_assignment : Association to many Assignment on To_assignment.Project = Project;
+  key ID           : UUID;
+      project      : String;
+      projectType  : String;
+      deliveryType : String;
+      leadResource : String;
+      toAssignment : Association to many Assignments
+                       on toAssignment.project = project;
 }
 
-entity Assignment {
-  key ID                : UUID;
-      Enterprise_ID     : String;
-      To_resource     : Association to many Resources on To_resource.Enterprise_ID = Enterprise_ID;
-      To_project     : Association to many Projects on To_project.Project = Project;
-      Project           : String;
-      Allocation        : String;
-      // Lead_Resource_ID  : String;
-      Start_Date        : String;
-      End_Date          : String;
-      Assignment_Status : String;
-      //Latest            : String;
-      Role_Description  : String;
+entity Assignments {
+  key ID               : UUID;
+      enterpriseID     : String;
+      toResource       : Association to many Resources
+                           on toResource.enterpriseID = enterpriseID;
+      toProject        : Association to many Projects
+                           on toProject.project = project;
+      project          : String;
+      allocation       : String;
+      // leadResourceID  : String;
+      startDate        : Date;
+      endDate          : Date;
+      assignmentStatus : String;
+      //latest            : String;
+      roleDescription  : String;
 }
 
-entity Demand {
-  key ID                      : UUID;
-      Demand_ID               : String;
-      To_DemandItems : Association to many DemandItems on To_DemandItems.Demand_ID=Demand_ID;
-      Project                 : String;
-      Project_Type            : String;
-      Delivery_Type           : String;
-      Requestor_Enterprise_ID : String;
-      Request_Date            : String;
-      //Demand_Status           : String;
-      Deal_Type               : String;
-      Deal_Status             : String;
-      Remarks                 : String;
+entity Demands {
+  key ID                    : UUID;
+      demandID              : String;
+      toDemandItems         : Association to many DemandItems
+                                on toDemandItems.demandID = demandID;
+      project               : String;
+      projectType           : String;
+      deliveryType          : String;
+      requestorEnterpriseID : String;
+      requestDate           : Date;
+      //demandStatus           : String;
+      dealType              : String;
+      dealStatus            : String;
+      remarks               : String;
 }
 
 
-entity Demand_Items {
-  key ID                     : UUID;
-      Demand_ID              : String;
-      To_demand : Association to one Demand on To_demand.Demand_ID=Demand_ID;
-      Project                : String;
-      Demand_Item            : String;
-      Start_Date             : String;
-      End_Date               : String;
-      //Required_Skill         : String;
-      Required_Level         : String;
-      Resource_Skill         : String;
-      Resource_Level         : String;
-      Resource_Enterprise_ID : String;
-      To_resource : Association to one Resources on To_resource.Enterprise_ID=Resource_Enterprise_ID;
-      Resource_Status        : String;
-}
 entity DemandItems {
-  key ID                     : UUID;
-      Demand_ID              : String;
-      To_demand : Association to one Demand on To_demand.Demand_ID=Demand_ID;
-      Project                : String;
-      Demand_Item            : String;
-      Start_Date             : String;
-      End_Date               : String;
-      //Required_Skill         : String;
-      Required_Level         : String;
-      Resource_Skill         : String;
-      Resource_Level         : String;
-      Resource_Enterprise_ID : String;
-      To_resource : Association to one Resources on To_resource.Enterprise_ID=Resource_Enterprise_ID;
-      Resource_Status        : String;
+  key ID                   : UUID;
+      demandID             : String;
+      toDemand             : Association to one Demands
+                               on toDemand.demandID = demandID;
+      project              : String;
+      demandItem           : Integer;
+      startDate            : Date;
+      endDate              : Date;
+      //requiredSkill         : String;
+      requiredLevel        : String;
+      resourceSkill        : String;
+      resourceLevel        : String;
+      resourceEnterpriseID : String;
+      toResource           : Association to one Resources
+                               on toResource.enterpriseID = resourceEnterpriseID;
+      resourceStatus       : String;
 }
