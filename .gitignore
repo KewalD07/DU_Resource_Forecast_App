@@ -37,3 +37,7 @@ mta_archives/
 db/.env
 # auto generated wildcard
 .env
+# auto generated wildcard
+.env4
+# auto generated wildcard
+.env1

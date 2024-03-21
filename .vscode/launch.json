@@ -17,7 +17,7 @@
       ]
     },
     {
-      "name": "Run DU_Resource_Forecast_App",
+      "name": "Run Demo_Apps-1",
       "request": "launch",
       "type": "node",
       "cwd": "${workspaceFolder}",
@@ -34,7 +34,7 @@
       "envFile": "${workspaceFolder}/.env1",
       "env": {
         "NODE_ENV": "development",
-        "run.config": "{\"handlerId\":\"cap_run_config_handler_id\",\"runnableId\":\"{\\\"projectPath\\\":\\\"/home/user/projects/DU_Resource_Forecast_App\\\",\\\"profileName\\\":\\\"development\\\"}\"}"
+        "run.config": "{\"handlerId\":\"cap_run_config_handler_id\",\"runnableId\":\"{\\\"projectPath\\\":\\\"/home/user/projects/Demo_Apps\\\",\\\"profileName\\\":\\\"development\\\"}\"}"
       }
     }
   ]

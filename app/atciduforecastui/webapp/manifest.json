@@ -90,6 +90,9 @@
           "autoExpandSelect": true,
           "earlyRequests": true
         }
+      },
+      "localD":{
+        "type": "sap.ui.model.json.JSONModel"
       }
     },
     "resources": {

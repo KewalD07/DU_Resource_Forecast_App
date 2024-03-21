@@ -16,9 +16,9 @@
       <!--<core:Item key="All" text="All"/><core:Item key="All" text="All"/><core:Item key="100" text="100"/><core:Item key="Null" text="No Allocation"/><core:Item key="Active" text="Active"/><core:Item key="Completed" text="Completed"/><core:Item key="Inprogress" text="Inprogress"/>-->
       <!-- </HeaderContainer>-->
       <Table id="resourceTable" items="{/ResourceDashboard}">
-        <headerToolbar>
-          <OverflowToolbar id="_IDGenOverflowToolbar1">
-            <ToolbarSpacer id="_IDGenToolbarSpacer1" />
+        <headerToolbar id="_IDGenToolbar1">
+          <OverflowToolbar>
+            <ToolbarSpacer />
             <Label id="_IDGenLabel1" text="Filter Records:"/>
             <Select id="recordFilter" change="onRecordFilterChange">
               <core:Item id="_IDGenItem1" key="All" text="All"/>
