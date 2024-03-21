@@ -8,7 +8,11 @@ sap.ui.define([
         "use strict";
 
         return Controller.extend("atciduforecastui.controller.Main", {
-            onInit: function () {
+            onInit: async function () {
+                const localData = await $.get(this.getOwnerComponent().getModel().sServiceUrl+"/ResourceDashboard");
+                if(localData){
+                    this.getOwnerComponent().getModel("localD").setProperty("/ResourceDashboard",localData?.value);
+                }
                 this.setFilterMessage("Displaying Information of All Resources");
               //  this.onReadData();
                 
@@ -25,6 +29,7 @@ sap.ui.define([
                     sMessage = "Displaying Information of All Resources";
                 }
                 else if (sSelectedStatus === "HittingDownTime") {
+                   // oBinding.filter([]);
                     this.onFilterChange();
                     sMessage = "Displaying Information of Resources nearing Down Time";
                 }
@@ -43,16 +48,17 @@ sap.ui.define([
                 this.setFilterMessage(sMessage);
             },
             onFilterChange: function() {
+               var data = this.getOwnerComponent().getModel("localD").getProperty("/ResourceDashboard")
                 var oTable = this.getView().byId("resourceTable");
                 var oBinding = oTable.getBinding("items");
                 var currentDate = new Date();
                 var aFilters = [];
             
                 // Iterate through each item in the ResourceDashboard collection
-                oTable.getItems().forEach(function (oItem) {
-                    var oContext = oItem.getBindingContext();
-                    var oResource = oContext.getObject();
-                    var endDate = new Date(oResource.endDate);
+                data.forEach(function (oItem) {
+                   // var oContext = oItem.getBindingContext();
+                   // var oResource = oContext.getObject();
+                    var endDate = new Date(oItem.endDate);
                     
                     // Calculate the difference in milliseconds
                     var timeDifference = endDate.getTime() - currentDate.getTime();
@@ -62,11 +68,12 @@ sap.ui.define([
                     
                     // If the difference is less than or equal to 15 days, add the item to the filter
                     if (differenceInDays <= 15) {
-                        aFilters.push(new sap.ui.model.Filter("enterpriseID", sap.ui.model.FilterOperator.EQ, oResource.enterpriseID));
+                        aFilters.push(new sap.ui.model.Filter("enterpriseID", sap.ui.model.FilterOperator.EQ, oItem.enterpriseID));
                     }
                 });
             
                 // Apply the filter
+                oTable.getBinding("items").aFilters=[];
                 oBinding.filter(aFilters);
             },
             setFilterMessage: function(sMessage) {

@@ -9,6 +9,13 @@
       "destination": "ui5"
     },
     {
+      "authenticationType": "xsuaa",
+      "csrfProtection": false,
+      "source": "^/Demo_Apps_destination_srv/(.*)$",
+      "destination": "Demo_Apps_destination_srv",
+      "target": "$1"
+    },
+    {
       "source": "^/test-resources/(.*)$",
       "target": "/test-resources/$1",
       "authenticationType": "none",

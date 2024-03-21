@@ -17,7 +17,7 @@
         },
         "dataSources": {
             "mainService": {
-                "uri": "odata/v4/noauth/",
+                "uri": "Demo_Apps_destination_srv/odata/v4/noauth/",
                 "type": "OData",
                 "settings": {
                     "annotations": [],
@@ -90,6 +90,9 @@
                     "autoExpandSelect": true,
                     "earlyRequests": true
                 }
+            },
+            "localD": {
+                "type": "sap.ui.model.json.JSONModel"
             }
         },
         "resources": {

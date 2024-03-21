@@ -48,6 +48,36 @@ modules:
     - npm install
     - npm run build:cf
     supported-platforms: []
+- name: Demo_Apps-destination-content
+  type: com.sap.application.content
+  requires:
+  - name: Demo_Apps-destination-service
+    parameters:
+      content-target: true
+  - name: Demo_Apps-repo-host
+    parameters:
+      service-key:
+        name: Demo_Apps-repo-host-key
+  - name: Demo_Apps-auth
+    parameters:
+      service-key:
+        name: Demo_Apps-auth-key
+  parameters:
+    content:
+      instance:
+        destinations:
+        - Name: resourcedashboardui_Demo_Apps_repo_host
+          ServiceInstanceName: Demo_Apps-html5-srv
+          ServiceKeyName: Demo_Apps-repo-host-key
+          sap.cloud.service: resourcedashboardui
+        - Authentication: OAuth2UserTokenExchange
+          Name: resourcedashboardui_Demo_Apps_auth
+          ServiceInstanceName: Demo_Apps-auth
+          ServiceKeyName: Demo_Apps-auth-key
+          sap.cloud.service: resourcedashboardui
+        existing_destinations_policy: ignore
+  build-parameters:
+    no-source: true
 resources:
 - name: Demo_Apps-db
   type: com.sap.xs.hdi-container
@@ -73,20 +103,33 @@ resources:
   type: org.cloudfoundry.managed-service
   parameters:
     config:
-      HTML5Runtime_enabled: false
+      HTML5Runtime_enabled: true
       init_data:
         instance:
           destinations:
-          - Authentication: NoAuthentication
-            Name: ui5
-            ProxyType: Internet
-            Type: HTTP
-            URL: https://ui5.sap.com
+            - Authentication: NoAuthentication
+              HTML5.DynamicDestination: true
+              HTML5.ForwardAuthToken: true
+              Name: Demo_Apps_destination_srv
+              ProxyType: Internet
+              Type: HTTP
+              URL: ~{srv-api/srv-url}
+              WebIDEAdditionalData: full_url
+              WebIDEEnabled: true
+              WebIDEUsage: odata_gen
+  
+            - Authentication: NoAuthentication
+              Name: ui5
+              ProxyType: Internet
+              Type: HTTP
+              URL: https://ui5.sap.com
           existing_destinations_policy: update
       version: 1.0.0
     service: destination
     service-name: Demo_Apps-destination-service
     service-plan: lite
+  requires:
+    - name: srv-api
 parameters:
   deploy_mode: html5-repo
   enable-parallel-deployments: true
